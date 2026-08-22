@@ -162,23 +162,264 @@ sns.countplot(data=guest_credits, y='GuestStar', order=star_order, ax=axes[1], c
 axes[1].set(title='Guest-star credit frequency', xlabel='Episodes', ylabel='Guest star')
 plt.tight_layout()
 
-Findings
-Season-level averages and the time-series plot show whether the audience trend is upward or downward across the run.
-The highest-viewership table identifies the episodes that reached the largest audiences; the highest ratings table captures critical or fan-favorite episodes, which need not be the same episodes.
-Listed guest stars are uncommon in this extract, so their group comparison has limited statistical power. Treat the difference in group averages as an association to investigate, not a causal effect.
-Ratings and viewership measure different outcomes: an episode can be highly rated by viewers who watched it without reaching the largest broadcast audience.
-print(f'{len(episodes)} episodes from seasons {episodes.Season.min()}-{episodes.Season.max()}')
-print(f"{episodes['has_guest_star'].sum()} episodes have a listed guest star")
-print(f"Peak viewership: {episodes.loc[episodes['Viewership'].idxmax(), 'EpisodeTitle']} ({episodes['Viewership'].max():.2f} million)")
-print(f"Peak rating: {episodes.loc[episodes['Ratings'].idxmax(), 'EpisodeTitle']} ({episodes['Ratings'].max():.1f})")
-print(guest_summary)
-188 episodes from seasons 1-9
-29 episodes have a listed guest star
-Peak viewership: Stress Relief (22.91 million)
-Peak rating: Goodbye, Michael (9.8)
-                      episodes  avg_viewership  median_viewership  avg_rating
-has_guest_star                                                               
-No listed guest star       159            7.21               7.51        8.24
-Listed guest star           29            7.43               7.60        8.20
+1. Executive Summary
+
+This project combines two entertainment-data analytics tasks: investigating Netflix movies and analyzing guest appearances in the television series The Office. The objective is to transform raw entertainment data into meaningful insights using Python and present the results through an interactive Power BI dashboard.
+
+2. Project Objectives
+
+Analyze Netflix movie distribution and trends.
+
+Investigate release years, duration, ratings and genres where available.
+
+Identify changes in Netflix movie content over time.
+
+Analyze guest stars and guest appearances in The Office.
+
+Rank guest stars by appearance frequency.
+
+Compare guest appearances across seasons and episodes.
+
+Create reproducible visualizations and an interactive dashboard.
+
+3. Key Analytical Questions
+
+Netflix Movies
+
+How has the number of Netflix movies changed over time?
+
+Which genres are most common?
+
+What is the typical movie duration?
+
+Which release years contribute the most movies?
+
+How are movies distributed by rating?
+
+Does movie duration vary across genres or ratings?
+
+The Office Guest Stars
+
+Which guest stars appear most frequently?
+
+Which seasons contain the most guest appearances?
+
+Which episodes contain notable guest appearances?
+
+Are appearances concentrated in particular periods?
+
+Which guest stars have repeated appearances?
+
+4. Dataset Description
+
+The project should use the Netflix and The Office CSV files supplied for analysis. Because dataset versions can use different column names, the Python workflow first inspects columns, data types, missing values and duplicates before creating derived variables.
+
+Typical Netflix fields: title, type, release_year, duration, rating, listed_in, country, date_added.
+
+Typical The Office fields: season, episode, episode_title, guest_star, guest_appearance, air_date. These are representative fields; the final code should use the actual CSV schema.
+
+5. Data Cleaning and Preparation
+
+Load CSV files with Pandas.
+
+Inspect shape, columns, data types and missing values.
+
+Remove accidental index columns.
+
+Convert dates and numeric fields to appropriate types.
+
+Handle missing values.
+
+Remove exact duplicates where appropriate.
+
+Normalize text and category labels.
+
+Create derived fields such as decade, duration group, season and appearance count.
+
+6. Exploratory Data Analysis
+
+Netflix analysis examines catalog size, release trends, genres, duration, ratings and other available attributes. The Office analysis counts guest appearances, ranks guest stars, and examines season and episode patterns.
+
+7. Recommended Visualizations
+
+Netflix movies by year — line chart.
+
+Netflix movies by decade — bar chart.
+
+Top genres — horizontal bar chart.
+
+Movie duration distribution — histogram.
+
+Duration by rating — box plot.
+
+Rating distribution — bar chart.
+
+Top The Office guest stars — horizontal bar chart.
+
+Guest appearances by season — column chart.
+
+Guest appearances by episode — bar chart.
+
+Guest-star appearance distribution — histogram or Pareto chart.
+
+8. Statistical and Analytical Methods
+
+Descriptive statistics: count, mean, median, standard deviation, minimum and maximum.
+
+Frequency and percentage analysis.
+
+Group-by aggregation by year, genre, rating, season and guest star.
+
+Correlation analysis for suitable numeric variables.
+
+Outlier detection using box plots and IQR.
+
+9. Power BI Dashboard Layout
+
+Page 1 — Netflix Overview
+
+KPI: Total Movies
+
+KPI: Average Duration
+
+KPI: Latest Release Year
+
+Movies by Year
+
+Movies by Decade
+
+Top 10 Genres
+
+Rating Distribution
+
+Filters: Year, Genre, Rating
+
+Page 2 — Netflix Content Analysis
+
+Duration distribution
+
+Duration by rating
+
+Genre versus average duration
+
+Country contribution if available
+
+Interactive slicers
+
+Page 3 — The Office Guest Stars
+
+Total guest appearances
+
+Unique guest stars
+
+Top 10 guest stars
+
+Guest appearances by season
+
+Guest appearances by episode
+
+Guest-star detail table
+
+Page 4 — Interactive Insights
+
+Guest-star search/filter
+
+Season and year slicers
+
+Genre and rating slicers
+
+Drill-through to detailed records
+
+Tooltips with additional metadata
+
+10. Suggested Power BI DAX
+
+Total Movies = CALCULATE(COUNTROWS(Netflix), Netflix[type] = "Movie")
+
+Average Duration = AVERAGE(Netflix[duration_minutes])
+
+Total Guest Appearances = COUNTROWS(TheOffice)
+
+Unique Guest Stars = DISTINCTCOUNT(TheOffice[guest_star])
+
+Movies by Year = COUNTROWS(Netflix)
+
+11. Project Workflow
+
+Collect and validate datasets.
+
+Load data into Python.
+
+Perform data-quality checks.
+
+Clean and transform data.
+
+Conduct EDA.
+
+Create visualizations.
+
+Export cleaned data and outputs.
+
+Load data into Power BI.
+
+Build interactive dashboards.
+
+Interpret findings and document limitations.
+
+12. Expected Insights
+
+The completed analysis should reveal patterns in Netflix movie availability, genre composition, release timing, duration and ratings, while the The Office analysis should identify guest-star concentration and season or episode patterns. Exact numerical findings should be taken directly from the final CSV analysis outputs.
+
+13. Limitations
+
+Netflix catalogs can vary by country and change over time.
+
+Ratings and metadata may contain missing or inconsistent values.
+
+Genre fields may contain multiple categories in one record.
+
+Guest-star names may have spelling or formatting differences.
+
+Appearance counts do not necessarily measure the importance of a role.
+
+Observational patterns should not automatically be interpreted as causal relationships.
+
+14. Future Enhancements
+
+Add country-level Netflix maps.
+
+Build a recommendation model using movie metadata.
+
+Perform NLP on movie descriptions.
+
+Add IMDb or Rotten Tomatoes information.
+
+Create an episode-level character network for The Office.
+
+Add Power BI drill-through and dynamic tooltips.
+
+15. Skills Demonstrated
+
+Data Cleaning • Exploratory Data Analysis • Data Visualization • Statistical Analysis • Feature Engineering • Python • Pandas • NumPy • Matplotlib • Seaborn • Power BI • DAX • Dashboard Design • Data Storytelling • GitHub Documentation
+
+16. Suggested GitHub Structure
+
+Investigating-Netflix-and-The-Office/
+├── data/
+│   ├── netflix_movies.csv
+│   └── the_office_guest_stars.csv
+├── src/
+│   └── entertainment_analysis.py
+├── notebooks/
+│   └── analysis.ipynb
+├── outputs/
+│   ├── cleaned_data/
+│   └── graphs/
+├── powerbi/
+│   └── dashboard_layout.md
+├── docs/
+│   └── project_documentation.docx
+├── requirements.txt
+└── README.md
  
  
